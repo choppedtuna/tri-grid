@@ -1,10 +1,11 @@
-import { HttpService } from "@rbxts/services";
+import { HttpService, Workspace } from "@rbxts/services";
 import { DrawType } from "DrawTypes";
 import BeamQuad from "DrawTypes/BeamQuad";
 import MeshTriangle from "DrawTypes/SpecialMesh";
 import Point from "Point";
 
 export interface GridSettings {
+	Parent?: Instance
 	Position: Vector3
 	Size: Vector3
 	Resolution: number
@@ -24,7 +25,7 @@ class TriGrid {
 	private draws: Array<MeshTriangle | BeamQuad>[][];
 	private points: Point[][];
 
-	private container: Model = new Instance('Model');
+	private container: Instance;
 
 	private pos_X: number;
 	private pos_Y: number;
@@ -39,6 +40,13 @@ class TriGrid {
 	private halfSize: Vector3;
 
 	constructor(Settings: GridSettings) {
+		if (Settings.Parent !== undefined) {
+			this.container = Settings.Parent;
+		} else {
+			this.container = new Instance('Model');
+			this.container.Parent = Workspace;
+		}
+
 		this.resolution = math.clamp(Settings.Resolution ?? 20, 10, 150);
 		this.size = Settings.Size;
 		this.position = Settings.Position;

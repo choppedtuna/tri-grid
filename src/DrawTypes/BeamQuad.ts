@@ -26,7 +26,7 @@ class BeamQuad {
     private c: Point;
     private d: Point;
 
-    constructor(Container: Model, PointA: Point, PointB: Point, PointC: Point, PointD: Point, x: number, z: number) {
+    constructor(Container: Instance, PointA: Point, PointB: Point, PointC: Point, PointD: Point, x: number, z: number) {
         this.container = Container;
 
         this.attach0 = new Instance('Attachment');
