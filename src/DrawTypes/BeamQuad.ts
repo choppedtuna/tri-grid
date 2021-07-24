@@ -101,8 +101,9 @@ class BeamQuad {
 
     public Show(): void {
         this.beam.Parent = this.container;
-        this.attach0.Parent = this.container;
-        this.attach1.Parent = this.container;
+        // Must be parented to PartInstance
+        this.attach0.Parent = Workspace.Terrain;
+        this.attach1.Parent = Workspace.Terrain;
     }
 
 }
