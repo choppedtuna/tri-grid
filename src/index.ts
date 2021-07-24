@@ -1,5 +1,6 @@
 import { HttpService } from "@rbxts/services";
 import { DrawType } from "DrawTypes";
+import BeamQuad from "DrawTypes/BeamQuad";
 import MeshTriangle from "DrawTypes/SpecialMesh";
 import Point from "Point";
 
@@ -11,7 +12,8 @@ export interface GridSettings {
 }
 
 export enum DrawTypeEnum {
-    'SpecialMesh'
+	'SpecialMesh',
+	'QuadBeam'
 }
 
 class TriGrid {
@@ -19,8 +21,10 @@ class TriGrid {
 	private size: Vector3;
 	private position: Vector3;
 	private drawType: DrawTypeEnum;
-	private draws: Array<DrawType>[][];
+	private draws: Array<MeshTriangle | BeamQuad>[][];
 	private points: Point[][];
+
+	private container: Model = new Instance('Model');
 
 	private pos_X: number;
 	private pos_Y: number;
@@ -73,7 +77,6 @@ class TriGrid {
 			}
 		}
 
-		// Initialise Array
 		for (let x = 0; x <= this.resolution + 1; x++) {
 			this.draws[x] = [];
 			for (let z = 0; z <= this.resolution + 1; z++) {
@@ -81,13 +84,28 @@ class TriGrid {
 			}
 		}
 
-		if (this.drawType === DrawTypeEnum.SpecialMesh) {
+		if (this.drawType === DrawTypeEnum.QuadBeam) {
+
 			for (let x = 0; x < this.resolution - 1; x++) {
 				for (let z = 0; z < this.resolution - 1; z++) {
-					print(`Point 1: ${this.points[x][z].getPosition()}`);
-					print(`Point 2: ${this.points[x][z + 1].getPosition()}`);
-					const TriA = new MeshTriangle(this.points[x][z], this.points[x][z + 1], this.points[x + 1][z + 1]);
-					const TriB = new MeshTriangle(this.points[x][z], this.points[x + 1][z], this.points[x + 1][z + 1]);
+
+					const Quad = new BeamQuad(this.container, this.points[x][z], this.points[x][z + 1], this.points[x + 1][z + 1], this.points[x + 1][z], x, z);
+
+					this.draws[x][z].push(Quad);
+					this.draws[x][z + 1].push(Quad);
+					this.draws[x + 1][z + 1].push(Quad);
+					this.draws[x + 1][z].push(Quad);
+
+				}
+			}
+
+		} else {
+
+			for (let x = 0; x < this.resolution - 1; x++) {
+				for (let z = 0; z < this.resolution - 1; z++) {
+
+					const TriA = new MeshTriangle(this.container, this.points[x][z], this.points[x][z + 1], this.points[x + 1][z + 1]);
+					const TriB = new MeshTriangle(this.container, this.points[x][z], this.points[x + 1][z], this.points[x + 1][z + 1]);
 
 					this.draws[x][z].push(TriA);
 					this.draws[x][z + 1].push(TriA);
@@ -99,8 +117,13 @@ class TriGrid {
 
 				}
 			}
+
 		}
 
+	}
+
+	public getResolution(): number {
+		return this.resolution;
 	}
 
 	public getPoints(): Point[][] {

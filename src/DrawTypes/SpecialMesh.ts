@@ -7,11 +7,15 @@ class MeshTriangle {
     private w1_mesh: SpecialMesh;
     private w2_mesh: SpecialMesh;
 
+    private container: Instance;
+
     private a: Point;
     private b: Point;
     private c: Point;
 
-    constructor(PointA: Point, PointB: Point, PointC: Point) {
+    constructor(Container: Instance, PointA: Point, PointB: Point, PointC: Point) {
+        this.container = Container;
+
         const w1 = new Instance('Part');
         w1.Anchored = true;
         w1.CanCollide = false;
@@ -46,8 +50,8 @@ class MeshTriangle {
 
         this.Update();
 
-        this.w1.Parent = Workspace;
-        this.w2.Parent = Workspace;
+        this.w1.Parent = this.container;
+        this.w2.Parent = this.container;
     }
 
     public Update() {
