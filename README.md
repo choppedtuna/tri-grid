@@ -1,6 +1,8 @@
 # tri-grid
-Roblox-ts typings for boatbomber's [GridCreator](https://devforum.roblox.com/t/gridcreator-draw-grids-with-whatever-tradeoff-you-prefer/698328)
-Maps Point array into triangular terrain!
+Roblox-ts typings for boatbomber's [GridCreator](https://devforum.roblox.com/t/gridcreator-draw-grids-with-whatever-tradeoff-you-prefer/698328) <br/>
+Triangular and fully configurable terrain
+
+
 
 # Installation
 ```
@@ -27,6 +29,7 @@ for (let x = 0; x < TerrainGrid.getResolution(); x++) {
     for (let z = 0; z < TerrainGrid.getResolution(); z++) {
         const Height = ((math.noise(x / 9, z / 9) + 1) * 20)
         const CurrentPoint = TerrainGrid.getPointPosition(x, z);
+        // Setting point properties
         TerrainGrid.setPointPosition(x, z, new Vector3(CurrentPoint.X, Height, CurrentPoint.Z));
         TerrainGrid.setPointColor(x, z, Color3.fromRGB(17, 50, 0).Lerp(Color3.fromRGB(65, 90, 52), Height / 10));
     }
@@ -34,3 +37,8 @@ for (let x = 0; x < TerrainGrid.getResolution(); x++) {
 
 ```
 Supports SpecialMesh & QuadBeam
+
+# Result
+<div align="center">
+    <img src="https://i.imgur.com/QkXAnXM.png"/>
+</div>
