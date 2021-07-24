@@ -45,6 +45,7 @@ class TriGrid {
 		} else {
 			this.container = new Instance('Model');
 			this.container.Parent = Workspace;
+			this.container.Name = 'TriGridGeneration';
 		}
 
 		this.resolution = math.clamp(Settings.Resolution ?? 20, 10, 150);
