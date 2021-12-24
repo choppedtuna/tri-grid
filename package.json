@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/tri-grid",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Typescript Wrapper for GridCreator by boatbomber.",
   "main": "out/init.lua",
   "scripts": {

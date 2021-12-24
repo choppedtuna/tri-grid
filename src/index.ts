@@ -2,6 +2,7 @@ import { HttpService, Workspace } from "@rbxts/services";
 import { DrawType } from "DrawTypes";
 import BeamQuad from "DrawTypes/BeamQuad";
 import MeshTriangle from "DrawTypes/SpecialMesh";
+import WedgeTriangle from "DrawTypes/WedgePart";
 import Point from "Point";
 
 export interface GridSettings {
@@ -14,7 +15,8 @@ export interface GridSettings {
 
 export enum DrawTypeEnum {
 	'SpecialMesh',
-	'QuadBeam'
+	'QuadBeam',
+	'WedgePart'
 }
 
 class TriGrid {
@@ -22,7 +24,7 @@ class TriGrid {
 	private size: Vector3;
 	private position: Vector3;
 	private drawType: DrawTypeEnum;
-	private draws: Array<MeshTriangle | BeamQuad>[][];
+	private draws: Array<MeshTriangle | BeamQuad | WedgeTriangle>[][];
 	private points: Point[][];
 
 	private container: Instance;
@@ -113,8 +115,20 @@ class TriGrid {
 			for (let x = 0; x < this.resolution - 1; x++) {
 				for (let z = 0; z < this.resolution - 1; z++) {
 
-					const TriA = new MeshTriangle(this.container, this.points[x][z], this.points[x][z + 1], this.points[x + 1][z + 1]);
-					const TriB = new MeshTriangle(this.container, this.points[x][z], this.points[x + 1][z], this.points[x + 1][z + 1]);
+					let TriA;
+					let TriB;
+
+					if (this.drawType === DrawTypeEnum.SpecialMesh) {
+
+						TriA = new MeshTriangle(this.container, this.points[x][z], this.points[x][z + 1], this.points[x + 1][z + 1]);
+						TriB = new MeshTriangle(this.container, this.points[x][z], this.points[x + 1][z], this.points[x + 1][z + 1]);
+	
+					} else {
+
+						TriA = new WedgeTriangle(this.container, this.points[x][z], this.points[x][z + 1], this.points[x + 1][z + 1])
+						TriB = new WedgeTriangle(this.container, this.points[x][z], this.points[x + 1][z], this.points[x + 1][z + 1])
+
+					}
 
 					this.draws[x][z].push(TriA);
 					this.draws[x][z + 1].push(TriA);
