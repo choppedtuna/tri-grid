@@ -145,6 +145,16 @@ class TriGrid {
 
 	}
 
+	public getOrigin(): Vector3 {
+		return this.position;
+	}
+
+	public destroy(): void {
+		this.draws = [];
+		this.points = [];
+		this.container.Destroy();
+	}
+
 	public getResolution(): number {
 		return this.resolution;
 	}
@@ -160,6 +170,14 @@ class TriGrid {
 	public setPointPosition(x: number, z: number, Position: Vector3): void {
 		const point = this.points[x][z];
 		point.setPosition(Position);
+		this.draws[x][z].forEach(quad => {
+			quad.Update();
+		})
+	}
+
+	public setPointMaterial(x: number, z: number, Material: Enum.Material) {
+		const point = this.points[x][z];
+		point.setMaterial(Material);
 		this.draws[x][z].forEach(quad => {
 			quad.Update();
 		})

@@ -11,8 +11,15 @@ class WedgeTriangle {
   private b: Point;
   private c: Point;
 
+  private material: Enum.Material;
+
   constructor(Container: Instance, PointA: Point, PointB: Point, PointC: Point) {
     this.container = Container;
+
+    this.material = PointA.getMaterial();
+    if (PointB.getMaterial() === PointC.getMaterial()) {
+      this.material = PointB.getMaterial();
+    }
 
     this.w1 = new Instance('WedgePart');
     this.w1.Anchored = true;
@@ -72,6 +79,9 @@ class WedgeTriangle {
       (color_a.G + color_b.G + color_c.G) / 3,
       (color_a.B + color_b.B + color_c.B) / 3
     )
+
+    this.w1.Material = this.material;
+    this.w2.Material = this.material;
   }
 }
 
